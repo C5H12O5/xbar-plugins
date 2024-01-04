@@ -27,6 +27,17 @@ UA = (
     " Chrome/120.0.0.0 Safari/537.36"
 )
 
+
+def _severity(code):
+    return {
+        "fatal": ("【致命】", "#FF0000"),
+        "serious": ("【严重】", "#CC0000"),
+        "normal": ("【一般】", "#990000"),
+        "prompt": ("【提示】", "#660000"),
+        "advice": ("【建议】", "#330000"),
+    }.get(code, ("【未知】", "#000000"))
+
+
 if __name__ == "__main__":
     if not COOKIE or not PARAMS:
         print("TAPD缺陷列表")
@@ -47,10 +58,13 @@ if __name__ == "__main__":
             print("剩余TAPD缺陷：" + data["total_count"])
             print("---")
             for bug in [item["Bug"] for item in data["bugs_list"]]:
-                pid = bug["project_id"]
                 bid = bug["id"]
+                sid = bug["short_id"]
+                pid = bug["project_id"]
+                title = bug["title"]
+                severity, color = _severity(bug["severity"])
                 href = f"https://{HOST}/{pid}/bugtrace/bugs/view?bug_id={bid}"
-                print(bug["title"] + " | href=" + href)
+                print(f"【{sid}】{severity}{title} | color={color} href={href}")
         except Exception as e:
             print("获取TAPD缺陷列表失败")
             print("---")
