@@ -4,7 +4,9 @@
 # <xbar.version>v1.0.0</bitbar.version>
 # <xbar.author>Xylitol</bitbar.author>
 # <xbar.author.github>C5H12O5</xbar.author.github>
+# <xbar.desc>Displays your bugs list from TAPD.</bitbar.desc>
 # <xbar.dependencies>python</bitbar.dependencies>
+# <xbar.abouturl>https://github.com/C5H12O5/xbar-plugins</xbar.abouturl>
 
 # <xbar.var>string(Cookie=""): The Cookie HTTP request header</xbar.var>
 # <xbar.var>string(Params=""): The /bugs_list API request params</xbar.var>
@@ -41,7 +43,7 @@ if __name__ == "__main__":
         try:
             request = urllib.request.Request(url, data, headers, method="POST")
             with urllib.request.urlopen(request) as response:
-                data = json.loads(response.read().decode("utf-8"))["data"]
+                data = json.loads(response.read())["data"]
             print("剩余TAPD缺陷：" + data["total_count"])
             print("---")
             for bug in [item["Bug"] for item in data["bugs_list"]]:
